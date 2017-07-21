@@ -3,8 +3,8 @@ require 'json'
 require 'roadmap'
 
 class Kele
-    include Roadmap
     include HTTParty
+    include Roadmap    
 
     BASE_URI = 'https://www.bloc.io/api/v1'
 
