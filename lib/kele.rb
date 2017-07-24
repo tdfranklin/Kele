@@ -42,4 +42,11 @@ class Kele
         puts response
     end
 
+    def create_submission(checkpoint_id, assignment_branch, assignment_commit_link, comment)
+        response = self.class.get("#{BASE_URI}/users/me", headers: { "authorization" => @auth_token })
+        enrollment_id = response["current_enrollment"]["id"]
+        response = self.class.get("#{BASE_URI}/checkpoint_submissions", body: { assignment_branch: assignment_branch, assignment_commit_link: assignment_commit_link, checkpoint_id: checkpoint_id, comment: comment, enrollment_id: enrollment_id }, headers: { "authorization" => @auth_token })
+        JSON.parse(response.body)
+    end
+
 end
