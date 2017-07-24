@@ -24,4 +24,22 @@ class Kele
         JSON.parse(response.body)
     end
 
+    def get_messages(page = nil)
+        if page.nil?
+            response = self.class.get("#{BASE_URI}/message_threads", headers: { "authorization" => @auth_token })
+            all_pages = (1..(response["count"]/10)).map do |n|
+                response = self.class.get("#{BASE_URI}/message_threads", body: { page: n }, headers: { "authorization" => @auth_token })
+                JSON.parse(response.body)
+            end
+        else
+            response = self.class.get("#{BASE_URI}/message_threads", body: { page: page }, headers: { "authorization" => @auth_token })
+            JSON.parse(response.body)
+        end
+    end
+
+    def create_message(user_id, recipient_id, title, body)
+        response = self.class.get("#{BASE_URI}/messages", body: { sender: user_id, recipient_id: recipient_id, subject: title, 'stripped-text': body }, headers: { "authorization" => @auth_token })
+        puts response
+    end
+
 end
